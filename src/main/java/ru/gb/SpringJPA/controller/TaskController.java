@@ -21,6 +21,11 @@ public class TaskController {
     private TaskService taskService;
     private TaskStatusService taskStatusService;
 
+    /**
+     * Метод для отображения в браузере списка со всеми задачами
+     * @param model
+     * @return
+     */
     @GetMapping("/tasks")
     public String getAllTasks(Model model) {
         List<Task> tasks = taskService.getAllTasks();
@@ -32,6 +37,12 @@ public class TaskController {
         return "tasks-list";
     }
 
+    /**
+     * Метод для отображения списка задач с конкретным статусом задачи
+     * @param status
+     * @param model
+     * @return
+     */
     @GetMapping("/tasks/{status}")
     public String getAllTasks(@PathVariable(name = "status") String status, Model model) {
         List<Task> tasks = new ArrayList();
@@ -47,6 +58,12 @@ public class TaskController {
         return "tasks-list";
     }
 
+    /**
+     * Метод для выведения в браузере страницы с формой для добавления новой задачи
+     * @param task
+     * @param model
+     * @return
+     */
     @GetMapping("/task-add")
     public String saveTaskForm(Task task, Model model) {
         task.setDate(LocalDate.now());
@@ -55,6 +72,11 @@ public class TaskController {
         return "task-add";
     }
 
+    /**
+     * Метод, который принимает данные из формы и записывает эти данные в БД (добавление задачи)
+     * @param task
+     * @return
+     */
     @PostMapping("/task-add")
     public String saveTask(Task task) {
         task.setStatus(TaskStatus.NOT_STARTED);
@@ -63,6 +85,11 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
+    /**
+     * Метод для удаления конкретной задачи (по id)
+     * @param id
+     * @return
+     */
     @GetMapping("/task-delete/{id}")
     public String deleteTask(@PathVariable(name = "id") Long id) {
         taskService.deleteTaskById(id);
@@ -70,6 +97,12 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
+    /**
+     * Метод для выведения в браузере страницы с формой для обновления задачи
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/task-update/{id}")
     public String updateTaskForm(@PathVariable(name = "id") Long id, Model model) {
         Task task = taskService.findById(id);
@@ -79,6 +112,11 @@ public class TaskController {
         return "task-update";
     }
 
+    /**
+     * Метод, который принимает данные из формы и записывает эти данные в БД (обновление задачи без изменения статуса)
+     * @param task
+     * @return
+     */
     @PostMapping("/task-update")
     public String updateTask(Task task) {
         TaskStatus taskStatus = taskService.findById(task.getId()).getStatus();
@@ -90,6 +128,12 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
+    /**
+     * Метод, который обновляет статус задачи по id с указанием конкретного статуса
+     * @param id
+     * @param status
+     * @return
+     */
     @GetMapping("/task-update-status/{id}/{status}")
     public String updateTaskStatus(@PathVariable(name = "id") Long id, @PathVariable(name = "status") String status) {
         Task task = taskService.findById(id);
