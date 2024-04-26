@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: SpringJPA
+#  jpa:
+#    generate-ddl: false
+#    hibernate:
+#      ddl-auto: none
